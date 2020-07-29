@@ -31,6 +31,8 @@ class NewTx extends StatelessWidget {
               cursorColor: txGreen,
               style: TextStyle(color: txGreen),
               controller: amountController,
+              // Cupertino Iphone: TextInputType.numberWithOptions(decimal: true),              
+              keyboardType: TextInputType.number,
               // onChanged: (userValue) {
               //   amountInput = userValue;
               // },
