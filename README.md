@@ -1,6 +1,6 @@
 # ExpenseWallet_V1
 ExpenseWallet helps you flexibly plan your budget and track spending, so you stay in control and achieve your saving goals.
-![](images/view_ExpanseWallet.png)
+![](images/view_eWallet2.png.png)
 #### Note:
 The work is still in progress
 
