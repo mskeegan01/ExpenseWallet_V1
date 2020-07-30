@@ -1,12 +1,36 @@
 import 'package:flutter/material.dart';
 import '../styles.dart';
 
-class NewTx extends StatelessWidget {
+class NewTx extends StatefulWidget {
   final Function addTx;
+
+  // receive pointer from main _addNewTx and accept it to this.addTx
+  NewTx(this.addTx);
+
+  @override
+  _NewTxState createState() => _NewTxState();
+}
+
+class _NewTxState extends State<NewTx> {
   final titleController = TextEditingController();
+
   final amountController = TextEditingController();
 
-  NewTx(this.addTx);
+  void confirmData() {
+    final submittedTitle = titleController.text;
+    // double conversion for submitted amount
+    final submittedAmount = double.parse(amountController.text);
+    // validate input
+    if (submittedTitle.isEmpty || submittedAmount <= 0) {
+      return;
+    }
+    // widget. access properties and methods of widget class inside state class (flutter feature)
+    widget.addTx(
+      submittedTitle,
+      submittedAmount,
+    );
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +46,7 @@ class NewTx extends StatelessWidget {
               cursorColor: txGreen,
               style: TextStyle(color: txGreen),
               controller: titleController,
+              onSubmitted: (_) => confirmData(),
               // onChanged: (userValue) {
               //   titleInput = userValue;
               // },
@@ -31,6 +56,10 @@ class NewTx extends StatelessWidget {
               cursorColor: txGreen,
               style: TextStyle(color: txGreen),
               controller: amountController,
+              // Iphone: TextInputType.numberWithOptions(decimal: true)
+              keyboardType: TextInputType.number,
+              // _ don't use the arguement but need to take it
+              onSubmitted: (_) => confirmData(),
               // onChanged: (userValue) {
               //   amountInput = userValue;
               // },
@@ -38,14 +67,8 @@ class NewTx extends StatelessWidget {
             FlatButton(
               child: Text('Add Transaction'),
               textColor: txGreen,
-              onPressed: () {
-                addTx(
-                    titleController.text, double.parse(amountController.text));
-                // Test User Input
-                // print(titleController);
-                // print(amountController);
-              },
-            )
+              onPressed: confirmData,
+            ),
           ],
         ),
       ),

@@ -14,9 +14,9 @@ class TxList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 300, // height wrapper for ListView - prevent infinite height
-      child: ListView(
-        // tx -> transactions for map function
-        children: transactions.map((tx) {
+      // not good for memory maintaining with ListView, but ListViewb.builder() supports
+      child: ListView.builder(
+        itemBuilder: (txContext, index) {
           return Card(
             child: Row(
               children: <Widget>[
@@ -35,7 +35,8 @@ class TxList extends StatelessWidget {
                   padding: EdgeInsets.all(10),
                   // call double toString
                   child: Text(
-                    "${tx.amount} €", //+ tx.amount.toString(), Dollar = \$
+                    // fix to max 2 decimal places
+                    "${transactions[index].amount.toStringAsFixed(2)} €", //+ tx.amount.toString(), Dollar = \$
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -47,12 +48,12 @@ class TxList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      tx.title,
+                      transactions[index].title,
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      DateFormat().format(tx.date),
+                      DateFormat().format(transactions[index].date),
                       style: TextStyle(
                         color: Colors.grey,
                       ),
@@ -62,7 +63,10 @@ class TxList extends StatelessWidget {
               ],
             ),
           );
-        }).toList(),
+        },
+        itemCount: transactions.length,
+        // tx -> transactions for map function
+        // children: transactions.map((transactions) {}).toList(),
       ),
     );
   }
