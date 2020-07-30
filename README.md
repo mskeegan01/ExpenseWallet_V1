@@ -1,16 +1,13 @@
-# expense_app
+# ExpenseWallet_V1
+ExpenseWallet helps you flexibly plan your budget and track spending, so you stay in control and achieve your saving goals.
+![](images/view_ExpanseWallet.png)
+#### Note:
+The work is still in progress
 
-A new Flutter project.
 
-## Getting Started
+## Upcoming features in Future:
+- Save and Delete your future expenses via a Date Picker
+- allows you to create a Savings Planner and make your goals feasible in a Chart
+- adjust your goals with a slider quick and easy
+- dark mode and light mode
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
