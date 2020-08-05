@@ -6,6 +6,6 @@ With future features you can manage your wallet via a Pie Chart.
 
 
 ### Future Features:
-- manage your Wallet via a Pie Chart and add your incoming expenses
+- instead of slider charts for the current week --> manage your Wallet via a Pie Chart and add your incoming expenses
 - general overview diagram where you can easily adjust with sliders your current income flow and expenses
 - delete, save and manage your Saving Goals and receive notifications if your a still aligned to your saving goal
