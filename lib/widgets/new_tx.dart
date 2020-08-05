@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+// Dependencies
 import '../styles.dart';
 
 class NewTx extends StatefulWidget {
@@ -12,24 +15,70 @@ class NewTx extends StatefulWidget {
 }
 
 class _NewTxState extends State<NewTx> {
-  final titleController = TextEditingController();
+  //properties of class _ private
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
+  DateTime _selectedDate;
 
-  final amountController = TextEditingController();
-
-  void confirmData() {
-    final submittedTitle = titleController.text;
+  void _confirmData() {
+    if (_amountController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            title: new Text(
+              "Missing valid data",
+              style: TextStyle(
+                color: alertColor,
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        },
+      );
+    }
+    final submittedTitle = _titleController.text;
     // double conversion for submitted amount
-    final submittedAmount = double.parse(amountController.text);
+    final submittedAmount = double.parse(_amountController.text);
     // validate input
-    if (submittedTitle.isEmpty || submittedAmount <= 0) {
+    if (submittedTitle.isEmpty ||
+        submittedAmount <= 0 ||
+        _selectedDate == null) {
       return;
     }
     // widget. access properties and methods of widget class inside state class (flutter feature)
-    widget.addTx(
-      submittedTitle,
-      submittedAmount,
-    );
+    widget.addTx(submittedTitle, submittedAmount, _selectedDate);
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    // context right refers to class property context, left to the agruement
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      // 2100 --> to select upcoming expanse events
+      lastDate: DateTime(2100),
+      // then method as anyonymus
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -45,8 +94,8 @@ class _NewTxState extends State<NewTx> {
               decoration: InputDecoration(labelText: "Title"),
               cursorColor: txGreen,
               style: TextStyle(color: txGreen),
-              controller: titleController,
-              onSubmitted: (_) => confirmData(),
+              controller: _titleController,
+              onSubmitted: (_) => _confirmData(),
               // onChanged: (userValue) {
               //   titleInput = userValue;
               // },
@@ -55,19 +104,42 @@ class _NewTxState extends State<NewTx> {
               decoration: InputDecoration(labelText: "Amount"),
               cursorColor: txGreen,
               style: TextStyle(color: txGreen),
-              controller: amountController,
+              controller: _amountController,
               // Iphone: TextInputType.numberWithOptions(decimal: true)
               keyboardType: TextInputType.number,
               // _ don't use the arguement but need to take it
-              onSubmitted: (_) => confirmData(),
+              onSubmitted: (_) => _confirmData(),
               // onChanged: (userValue) {
               //   amountInput = userValue;
               // },
             ),
-            FlatButton(
+            // date Picker
+            Container(
+              height: 70,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null
+                          ? "No Date chosen"
+                          : "Picked Date: ${DateFormat.yMd().format(_selectedDate)}",
+                    ),
+                  ),
+                  FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    child: Text(
+                      "Choose a Date",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: _presentDatePicker,
+                  ),
+                ],
+              ),
+            ),
+            RaisedButton(
               child: Text('Add Transaction'),
-              textColor: txGreen,
-              onPressed: confirmData,
+              color: txGreen,
+              onPressed: _confirmData,
             ),
           ],
         ),
