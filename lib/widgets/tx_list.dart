@@ -15,11 +15,10 @@ class TxList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400, // height wrapper for ListView - prevent infinite height
-      // not good for memory maintaining with ListView, but ListViewb.builder() supports
-      child: transactions.isEmpty
-          ? Column(
+    return transactions.isEmpty
+        ? LayoutBuilder(builder: (ctx, constraints) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
                   "No transactions have been added.",
@@ -29,49 +28,57 @@ class TxList extends StatelessWidget {
                   height: 20,
                 ),
                 Container(
-                    height: 200,
-                    child: Image.asset(
-                      "images/waiting.png",
-                      fit: BoxFit.cover,
-                    ))
+                  height: constraints.maxHeight * 0.6,
+                  child: Image.asset(
+                    "images/waiting.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ],
-            )
-          : ListView.builder(
-              itemBuilder: (txContext, index) {
-                return Card(
-                  elevation: 5,
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Padding(
-                        padding: EdgeInsets.all(6),
-                        child: FittedBox(
-                          child: Text(
-                            "${transactions[index].amount}€",
-                          ),
+            );
+          })
+        : ListView.builder(
+            itemBuilder: (txContext, index) {
+              return Card(
+                elevation: 5,
+                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    child: Padding(
+                      padding: EdgeInsets.all(6),
+                      child: FittedBox(
+                        child: Text(
+                          "${transactions[index].amount}€",
                         ),
                       ),
                     ),
-                    title: Text(transactions[index].title,
-                        style: Theme.of(context).textTheme.headline6),
-                    subtitle: Text(
-                      DateFormat.yMMMd().format(
-                        (transactions[index].date),
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      color: alertColor,
-                      onPressed: () => deleteTx(transactions[index].id),
+                  ),
+                  title: Text(transactions[index].title,
+                      style: Theme.of(context).textTheme.headline6),
+                  subtitle: Text(
+                    DateFormat.yMMMd().format(
+                      (transactions[index].date),
                     ),
                   ),
-                );
-              },
-              itemCount: transactions.length,
-              // tx -> transactions for map function
-              // children: transactions.map((transactions) {}).toList(),
-            ),
-    );
+                  trailing: MediaQuery.of(context).size.width > 460
+                      ? FlatButton.icon(
+                          icon: Icon(Icons.delete),
+                          textColor: alertColor,
+                          label: Text("Delete"),
+                          onPressed: () => deleteTx(transactions[index].id),
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete),
+                          color: alertColor,
+                          onPressed: () => deleteTx(transactions[index].id),
+                        ),
+                ),
+              );
+            },
+            itemCount: transactions.length,
+            // tx -> transactions for map function
+            // children: transactions.map((transactions) {}).toList(),
+          );
   }
 }
