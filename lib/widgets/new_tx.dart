@@ -1,8 +1,8 @@
-import 'dart:io';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import '../widgets/adaptive_flat_button.dart';
 
 // Dependencies
 import '../styles.dart';
@@ -65,6 +65,7 @@ class _NewTxState extends State<NewTx> {
     Navigator.of(context).pop();
   }
 
+// handler
   void _presentDatePicker() {
     // context right refers to class property context, left to the agruement
     showDatePicker(
@@ -134,22 +135,7 @@ class _NewTxState extends State<NewTx> {
                             : "Picked Date: ${DateFormat.yMd().format(_selectedDate)}",
                       ),
                     ),
-                    Platform.isIOS
-                        ? CupertinoButton(
-                            child: Text(
-                              "Choose a Date",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: _presentDatePicker,
-                          )
-                        : FlatButton(
-                            textColor: Theme.of(context).primaryColor,
-                            child: Text(
-                              "Choose a Date",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: _presentDatePicker,
-                          ),
+                    AdaptiveFlatButton("Choose Date", _presentDatePicker),
                   ],
                 ),
               ),
