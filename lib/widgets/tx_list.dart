@@ -27,13 +27,13 @@ class TxList extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  height: constraints.maxHeight * 0.6,
-                  child: Image.asset(
-                    "images/waiting.png",
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                // Container(
+                //   height: constraints.maxHeight * 0.6,
+                //   child: Image.asset(
+                //     "images/waiting.png",
+                //     fit: BoxFit.cover,
+                //   ),
+                // ),
               ],
             );
           })
